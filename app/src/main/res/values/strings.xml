@@ -6,4 +6,7 @@
     <string name="descrption">Descrption</string>
     <string name="take_picture">Take Picture</string>
     <string name="submit">Submit</string>
+    <string name="feed">Feed</string>
+    <string name="post">Post</string>
+    <string name="logout">Logout</string>
 </resources>

@@ -56,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
         btnSubmit = findViewById(R.id.btnSubmit);
         ivPostImage = findViewById(R.id.ivPostImage);
 
-//        queryPosts();
-
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,23 +155,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void queryPosts() {
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.include(Post.KEY_USER);
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> objects, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Issue with getting posts", e);
-                }
-
-                for (Post post : objects) {
-                    Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
-                }
-            }
-        });
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //Inflate the menu
@@ -198,6 +179,11 @@ public class MainActivity extends AppCompatActivity {
                      Toast.makeText(MainActivity.this, "Success!", Toast.LENGTH_SHORT).show();
                  }
              });
+        } else if (item.getItemId() == R.id.feed) {
+            //Compose icon has been clicked
+            Log.d(TAG, "Feed clicked");
+            Intent i = new Intent(MainActivity.this, FeedActivity.class);
+            startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }
