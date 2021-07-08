@@ -1,6 +1,8 @@
 package com.example.instagram;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.parse.ParseFile;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -51,7 +55,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvName;
         TextView tvDescription;
@@ -62,6 +66,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             tvName = itemView.findViewById(R.id.tvName);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             ivPhoto = itemView.findViewById(R.id.ivPhoto);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Post post) {
@@ -71,6 +76,25 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             ParseFile image = post.getImage();
             if (image != null) {
                 Glide.with(context).load(image.getUrl()).into(ivPhoto);
+            }
+        }
+
+        @Override
+        public void onClick(View v) {
+            Log.d("FeedAdapter", "Viewing post details");
+
+            //Get position
+            int position = getAdapterPosition();
+            //Validate position
+            if (position != RecyclerView.NO_POSITION) {
+                Post post = posts.get(position);
+
+                //Create intent
+                Intent intent = new Intent(context, PostDetailsActivity.class);
+                intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
+
+                //Show activity
+                context.startActivity(intent);
             }
         }
     }
