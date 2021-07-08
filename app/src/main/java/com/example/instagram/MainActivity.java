@@ -8,6 +8,8 @@ import androidx.core.content.FileProvider;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,7 +31,11 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -78,16 +84,37 @@ public class MainActivity extends AppCompatActivity {
         btnCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchCamera();
+                try {
+                    launchCamera();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    private void launchCamera() {
+    private void launchCamera() throws IOException {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Create a File reference for future access
-        photoFile = getPhotoFileUri(photoFileName);
+        // See code above
+        Uri takenPhotoUri = Uri.fromFile(getPhotoFileUri(photoFileName));
+        // by this point we have the camera photo on disk
+        Bitmap rawTakenImage = rotateBitmapOrientation(takenPhotoUri.getPath());
+        // See BitmapScaler.java: https://gist.github.com/nesquena/3885707fd3773c09f1bb
+        Bitmap resizedBitmap = BitmapScaler.scaleToFitWidth(rawTakenImage, DeviceDimensionsHelper.getDisplayWidth(this));
+
+        // Configure byte output stream
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        // Compress the image further
+        resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+        // Create a new file for the resized bitmap (`getPhotoFileUri` defined above)
+        photoFile = getPhotoFileUri(photoFileName + "_resized");
+        photoFile.createNewFile();
+        FileOutputStream fos = new FileOutputStream(photoFile);
+        // Write the bytes of the bitmap to file
+        fos.write(bytes.toByteArray());
+        fos.close();
 
         // wrap File object into a content provider
         // required for API >= 24
@@ -101,6 +128,34 @@ public class MainActivity extends AppCompatActivity {
             // Start the image capture intent to take photo
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
+    }
+
+    public Bitmap rotateBitmapOrientation(String photoFilePath) {
+        // Create and configure BitmapFactory
+        BitmapFactory.Options bounds = new BitmapFactory.Options();
+        bounds.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(photoFilePath, bounds);
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        Bitmap bm = BitmapFactory.decodeFile(photoFilePath, opts);
+        // Read EXIF Data
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(photoFilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String orientString = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
+        int orientation = orientString != null ? Integer.parseInt(orientString) : ExifInterface.ORIENTATION_NORMAL;
+        int rotationAngle = 0;
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_90) rotationAngle = 90;
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_180) rotationAngle = 180;
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_270) rotationAngle = 270;
+        // Rotate Bitmap
+        Matrix matrix = new Matrix();
+        matrix.setRotate(rotationAngle, (float) bm.getWidth() / 2, (float) bm.getHeight() / 2);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bm, 0, 0, bounds.outWidth, bounds.outHeight, matrix, true);
+        // Return result
+        return rotatedBitmap;
     }
 
     // Returns the File for a photo stored on disk given the fileName
