@@ -1,8 +1,8 @@
 package com.example.instagram;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
 import android.content.Intent;
@@ -20,23 +20,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
     private Button btnCaptureImage;
     private Button btnSubmit;
     private ImageView ivPostImage;
+    private ImageView ivPost;
+    private ImageButton ibHome;
+    private ImageButton ibProfile;
+
 
     private File photoFile;
     public String photoFileName = "photo.jpg";
@@ -57,10 +58,39 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
+
         etDescription = findViewById(R.id.etDescription);
         btnCaptureImage = findViewById(R.id.btnCaptureImage);
         btnSubmit = findViewById(R.id.btnSubmit);
         ivPostImage = findViewById(R.id.ivPostImage);
+        ivPost = findViewById(R.id.ivPost);
+        ibHome = findViewById(R.id.ibHome);
+        ibProfile = findViewById(R.id.ibProfile);
+
+        ibHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Compose icon has been clicked
+                Log.d(TAG, "Feed clicked");
+                Intent i = new Intent(MainActivity.this, FeedActivity.class);
+                startActivity(i);
+            }
+        });
+
+        ibProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Compose icon has been clicked
+                Log.d(TAG, "Profile clicked");
+                //Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+                //startActivity(i);
+            }
+        });
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,11 +264,6 @@ public class MainActivity extends AppCompatActivity {
                      Toast.makeText(MainActivity.this, "Success!", Toast.LENGTH_SHORT).show();
                  }
              });
-        } else if (item.getItemId() == R.id.feed) {
-            //Compose icon has been clicked
-            Log.d(TAG, "Feed clicked");
-            Intent i = new Intent(MainActivity.this, FeedActivity.class);
-            startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }

@@ -3,12 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/border">
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/border"
+        android:padding="10dp"
+        android:textColor="@color/black"
         tools:layout_editor_absoluteX="21dp"
         tools:layout_editor_absoluteY="16dp"
         tools:text="John Doe" />
@@ -18,6 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="300dp"
         android:layout_below="@id/tvName"
+        android:layout_centerHorizontal="true"
         tools:layout_editor_absoluteX="62dp"
         tools:srcCompat="@tools:sample/avatars" />
 
@@ -26,6 +34,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/ivPhoto"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/border"
+        android:padding="10dp"
+        android:textColor="@color/black"
         tools:layout_editor_absoluteX="187dp"
         tools:text="This is a description of the post" />
 </RelativeLayout>

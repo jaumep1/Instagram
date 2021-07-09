@@ -2,6 +2,7 @@ package com.example.instagram;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +34,9 @@ public class FeedActivity extends AppCompatActivity {
 
     RecyclerView rvPosts;
     FeedAdapter adapter;
+    private ImageView ivHome;
+    private ImageButton ibPost;
+    private ImageButton ibProfile;
 
     private SwipeRefreshLayout swipeContainer;
 
@@ -40,6 +46,37 @@ public class FeedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
+
+
+        ivHome = findViewById(R.id.ivHome);
+        ibPost = findViewById(R.id.ibPost);
+        ibProfile = findViewById(R.id.ibProfile);
+
+        ibPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Compose icon has been clicked
+                Log.d(TAG, "Feed clicked");
+                Intent i = new Intent(FeedActivity.this, MainActivity.class);
+                startActivity(i);
+            }
+        });
+
+        ibProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Compose icon has been clicked
+                Log.d(TAG, "Profile clicked");
+                //Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+                //startActivity(i);
+            }
+        });
+
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
 
         rvPosts = findViewById(R.id.rvPosts);
         LinearLayoutManager manager = new LinearLayoutManager(this);
@@ -131,11 +168,6 @@ public class FeedActivity extends AppCompatActivity {
                     Toast.makeText(FeedActivity.this, "Success!", Toast.LENGTH_SHORT).show();
                 }
             });
-        } else if (item.getItemId() == R.id.post) {
-            //Compose icon has been clicked
-            Log.d(TAG, "Post clicked");
-            Intent i = new Intent(FeedActivity.this, MainActivity.class);
-            startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }

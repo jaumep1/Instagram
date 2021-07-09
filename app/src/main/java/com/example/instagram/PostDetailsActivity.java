@@ -1,14 +1,23 @@
 package com.example.instagram;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.parse.LogOutCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -16,6 +25,7 @@ import java.util.Date;
 
 public class PostDetailsActivity extends AppCompatActivity {
 
+    private static final String TAG = "PostDetailsActivity";
     Post post;
 
     TextView tvName;
@@ -36,6 +46,12 @@ public class PostDetailsActivity extends AppCompatActivity {
         tvTimeStamp = findViewById(R.id.tvTimeStamp);
         ivPhoto = findViewById(R.id.ivPhoto);
 
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
+
         tvName.setText(post.getUser().getUsername());
         tvDescription.setText(post.getDescription());
         tvTimeStamp.setText(calculateTimeAgo(post.getCreatedAt()));
@@ -43,6 +59,40 @@ public class PostDetailsActivity extends AppCompatActivity {
         if (image != null) {
             Glide.with(this).load(image.getUrl()).into(ivPhoto);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //Inflate the menu
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.logout) {
+            //Compose icon has been clicked
+            Log.d(TAG, "Logout clicked");
+            ParseUser.logOutInBackground(new LogOutCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null) {
+                        Log.e(TAG, "Issue on login", e);
+                        return;
+                    }
+
+                    goLoginActivity();
+                    Toast.makeText(PostDetailsActivity.this, "Success!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void goLoginActivity() {
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+        finish();
     }
 
     public static String calculateTimeAgo(Date createdAt) {
