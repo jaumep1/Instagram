@@ -34,9 +34,6 @@ public class FeedActivity extends AppCompatActivity {
 
     RecyclerView rvPosts;
     FeedAdapter adapter;
-    private ImageView ivHome;
-    private ImageButton ibPost;
-    private ImageButton ibProfile;
 
     private SwipeRefreshLayout swipeContainer;
 
@@ -46,31 +43,6 @@ public class FeedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
-
-
-        ivHome = findViewById(R.id.ivHome);
-        ibPost = findViewById(R.id.ibPost);
-        ibProfile = findViewById(R.id.ibProfile);
-
-        ibPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Compose icon has been clicked
-                Log.d(TAG, "Feed clicked");
-                Intent i = new Intent(FeedActivity.this, MainActivity.class);
-                startActivity(i);
-            }
-        });
-
-        ibProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Compose icon has been clicked
-                Log.d(TAG, "Profile clicked");
-                //Intent i = new Intent(MainActivity.this, ProfileActivity.class);
-                //startActivity(i);
-            }
-        });
 
         // Find the toolbar view inside the activity layout
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

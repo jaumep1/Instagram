@@ -2,91 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/flContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
-    <include layout="@layout/toolbar_inapp" />
-
-    <EditText
-        android:id="@+id/etDescription"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ivPostImage"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/border"
-        android:ems="10"
-        android:hint="@string/descrption"
-        android:inputType="textPersonName"
-        android:padding="10dp"
-        android:textColorHint="@android:color/darker_gray" />
-
-    <Button
-        android:id="@+id/btnCaptureImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomNavigation"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="#0080FF"
-        android:text="@string/take_picture"
-        android:textColor="@color/black"
-        app:cornerRadius="12dp" />
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp" />
 
-    <Button
-        android:id="@+id/btnSubmit"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etDescription"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:textColor="@color/black"
-        app:cornerRadius="12dp"
-        android:backgroundTint="#0080FF"
-        android:text="@string/submit" />
-
-    <ImageView
-        android:id="@+id/ivPostImage"
-        android:layout_width="wrap_content"
-        android:layout_height="300dp"
-        android:layout_below="@+id/btnCaptureImage"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <ImageView
-        android:id="@+id/ivPost"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        app:srcCompat="@drawable/instagram_new_post_filled_24" />
+        app:menu="@menu/menu_bottom_navigation"
+        tools:layout_alignParentBottom="true" />
 
-    <ImageButton
-        android:id="@+id/ibHome"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/instagram_home_outline_24" />
-
-    <ImageButton
-        android:id="@+id/ibProfile"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/instagram_user_outline_24" />
 </RelativeLayout>

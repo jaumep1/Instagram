@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#000000"
     tools:context=".FeedActivity">
 
     <include
@@ -16,7 +16,7 @@
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/ivHome"
+        android:layout_above="@id/bottomNavigation"
         android:layout_below="@+id/toolbar"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp">
@@ -37,34 +37,12 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <ImageButton
-        android:id="@+id/ibPost"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentStart="true"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/instagram_new_post_outline_24" />
-
-    <ImageButton
-        android:id="@+id/ibProfile"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/instagram_user_outline_24" />
-
-    <ImageView
-        android:id="@+id/ivHome"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        app:srcCompat="@drawable/instagram_home_filled_24" />
+        app:menu="@menu/menu_bottom_navigation" />
 
 
 </RelativeLayout>
