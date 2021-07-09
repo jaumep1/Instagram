@@ -33,11 +33,11 @@ public class PostsFragment extends Fragment {
     private static final String TAG = "PostsFragment";
     RecyclerView rvPosts;
 
-    FeedAdapter adapter;
+    protected FeedAdapter adapter;
 
     private SwipeRefreshLayout swipeContainer;
 
-    List<Post> feed;
+    protected List<Post> feed;
 
     public PostsFragment() {
         // Required empty public constructor
@@ -95,7 +95,7 @@ public class PostsFragment extends Fragment {
                 android.R.color.holo_red_light);
     }
 
-    private void queryPosts() {
+    protected void queryPosts() {
         // specify what type of data we want to query - Post.class
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // include data referred by user key
