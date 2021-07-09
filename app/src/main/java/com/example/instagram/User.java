@@ -8,7 +8,7 @@ import com.parse.ParseUser;
 import org.parceler.Parcel;
 
 @ParseClassName("User")
-public class User extends ParseObject {
+public class User extends ParseUser {
     public static final String KEY_IMAGE = "profileImage";
     public static final String KEY_ID = "objectId";
 
