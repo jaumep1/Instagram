@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
+        android:background="@android:color/darker_gray"
         app:menu="@menu/menu_bottom_navigation"
         tools:layout_alignParentBottom="true" />
 

@@ -13,7 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -60,12 +64,14 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         TextView tvName;
         TextView tvDescription;
         ImageView ivPhoto;
+        ImageView ivProfileImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvName);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             ivPhoto = itemView.findViewById(R.id.ivPhoto);
+            ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             itemView.setOnClickListener(this);
         }
 
@@ -73,10 +79,31 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             // Bind the post data to the view elements
             tvDescription.setText(post.getDescription());
             tvName.setText(post.getUser().getUsername());
-            ParseFile image = post.getImage();
-            if (image != null) {
-                Glide.with(context).load(image.getUrl()).into(ivPhoto);
+            ParseFile postImage = post.getImage();
+            queryProfilePic(post.getUser());
+            if (postImage != null) {
+                Glide.with(context).load(postImage.getUrl()).into(ivPhoto);
             }
+        }
+
+        private void queryProfilePic(ParseUser user) {
+            // specify what type of data we want to query - Post.class
+            ParseQuery<ParseUser> query = ParseQuery.getQuery(com.parse.ParseUser.class);
+            // include data referred by user key
+            query.include(User.KEY_IMAGE);
+            query.whereEqualTo(User.KEY_ID, user.getObjectId());
+            query.findInBackground(new FindCallback<ParseUser>() {
+                @Override
+                public void done(List<com.parse.ParseUser> users, ParseException e) {
+                    // check for errors
+                    if (e != null) {
+                        return;
+                    }
+                    String image = ((ParseFile) users.get(0).get("profileImage")).getUrl();
+                    Glide.with(context).load(image).into(ivProfileImage);
+
+                }
+            });
         }
 
         @Override

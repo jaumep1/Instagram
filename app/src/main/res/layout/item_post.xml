@@ -11,12 +11,12 @@
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="31dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/border"
-        android:padding="10dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
         android:textColor="@color/black"
+        android:textStyle="bold"
         tools:layout_editor_absoluteX="21dp"
         tools:layout_editor_absoluteY="16dp"
         tools:text="John Doe" />
@@ -43,4 +43,14 @@
         android:textColor="@color/black"
         tools:layout_editor_absoluteX="187dp"
         tools:text="This is a description of the post" />
+
+    <ImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        tools:srcCompat="@tools:sample/avatars" />
 </RelativeLayout>
